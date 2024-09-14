@@ -1,6 +1,10 @@
 const namn = "test";
 const lösenord = "1234";
 
+let startscreen;
+let failedLoginScreen;
+let successfulLoginScreen;
+
 let root = document.getElementById("root");
 
 //header
@@ -15,6 +19,8 @@ let content = document.createElement("main");
 content.id = "content";
 root.appendChild(content);
 
+
+console.log("beginning");
 
 //text över namn inputbox
 let loginNameText = document.createElement("p");
@@ -37,32 +43,85 @@ content.appendChild(loginPasswordBox);
 
 
 //login knapp
+let buttondiv = document.createElement("div");
 let button = document.createElement("button");
+button.id = "button";
 button.innerText = "Logga in";
-content.appendChild(button);
+buttondiv.style.margin = "10%";
+buttondiv.append(button);
+content.appendChild(buttondiv);
 
+
+
+startscreen = true;
 
 button.addEventListener("click", function() 
 {
-    nameInput = loginNameBox.value;
-    passwordInput = loginPasswordBox.value;
+    console.log("event listener")
 
-    if(nameInput == namn && passwordInput == lösenord)
+    if(startscreen)
     {
-        console.log(nameInput);
-        console.log(passwordInput);
-        button.innerText = "Logga ut";
+        nameInput = loginNameBox.value;
+        passwordInput = loginPasswordBox.value;
 
-        loginNameText.remove();
-        loginNameBox.remove();
-        loginPasswordText.remove();
-        loginPasswordBox.remove();
+        if(nameInput == namn && passwordInput == lösenord)
+        {
+            console.log("success");
+            
+            headertext.innerText = "Välkommen";
 
-        
+            button.innerText = "Logga ut";
+    
+            loginNameText.remove();
+            loginNameBox.remove();
+            loginPasswordText.remove();
+            loginPasswordBox.remove();
+
+            successfulLoginScreen = true;
+            startscreen = false;
+        }
+        else
+        {
+            console.log("fail");
+
+            headertext.innerText = "Inloggning misslyckades";
+
+            button.innerText = "Försök igen";
+
+            loginNameText.remove();
+            loginNameBox.remove();
+            loginPasswordText.remove();
+            loginPasswordBox.remove();
+
+            failedLoginScreen = true;
+            startscreen = false;
+        }
     }
     else
     {
-        console.log("w")
+        headertext.innerText = "Inloggningssida";
+
+        loginNameText.innerText = "Namn: ";
+        content.appendChild(loginNameText);
+
+        loginNameBox.value = "";
+        content.appendChild(loginNameBox);
+
+
+        loginPasswordText.innerText = "Lösenord: ";
+        content.appendChild(loginPasswordText);
+
+        loginPasswordBox.value = "";
+        content.appendChild(loginPasswordBox);
+
+        
+        content.insertAdjacentElement("beforeend", buttondiv);
+        button.innerText = "Logga in";
+        
+
+        startscreen = true;
+        failedLoginScreen = false;
+        successfulLoginScreen = false;
     }
 })
 
